@@ -1,3 +1,5 @@
 def call() {
-    sh 'npm install --no-audit'
+    docker.image('node:20').inside {
+        sh 'npm install --no-audit'
+    }
 }
