@@ -1,6 +1,13 @@
-def call(String imageName, String tag) {
-    sh "docker build -t ${imageName}:${tag} ."
-    withDockerRegistry(credentialsId: 'docker-hub-credentials', url: '') {
-        sh "docker push ${imageName}:${tag}"
+stage('Build & Push Docker') {
+    when {
+        anyOf {
+            branch 'main'
+            // ↓ fallback for regular pipeline job
+            expression { env.GIT_BRANCH == 'origin/main' }
+            expression { env.BRANCH_NAME == null }
+        }
+    }
+    steps {
+        buildAndPush("${IMAGE_NAME}", "${IMAGE_TAG}")
     }
 }
