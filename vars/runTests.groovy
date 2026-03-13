@@ -1,3 +1,5 @@
 def call() {
-    sh 'npm test'
+    docker.image('node:20').inside {
+        sh 'npm test'
+    }
 }
